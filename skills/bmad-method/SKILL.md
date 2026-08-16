@@ -86,7 +86,7 @@ Implementation 交付不属于 interactive planning。项目有正式 Writer/Rev
 Artifact 按 step append-only 渐进构建：只追加已完成 step 的内容，不预填未来 step；当前 step 内可按用户反馈修订其候选。Frontmatter 至少维护：
 
 - `stepsCompleted`：只在当前 step 获得所需确认并完成保存后追加；
-- `inputDocuments`：只列用户确认纳入的输入；
+- `inputDocuments`：列出用户确认纳入且本次 workflow 实际读取、引用或用于判断的全部输入；accepted source、candidate、Review 和 correction artifact 仅作为 authority 分类。分类数量或总数不一致时保持当前 step，请求修正后才能继续；
 - `currentStep`：当前尚未获准退出的 step；
 - `acceptedDecisions`：用户已明确接受的决定及条件；
 - `pendingDecisions`：仍需用户选择的问题。
