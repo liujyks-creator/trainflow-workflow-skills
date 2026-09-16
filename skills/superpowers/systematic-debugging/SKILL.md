@@ -64,7 +64,7 @@ Read-only tracing may cross the expected modification set. A write outside the a
 
 ## Phase 1 — Evidence and Root Cause
 
-Read the complete relevant error, stack, exit code, warning, and artifact identity. Reproduce the symptom with exact inputs and environment when possible. Check the candidate delta and relevant recent change rather than assuming temporal correlation is causation.
+Read the complete relevant error, stack, exit code, warning, and artifact identity. Reproduce the symptom with exact inputs and environment when possible. Check the candidate delta and relevant recent change rather than assuming temporal correlation is causation. Treat an explanation as a hypothesis until supported, while relying on explicit user decisions and applicable type, database, and framework guarantees. An unproven scenario is not a new requirement or an implementation blocker.
 
 Choose the smallest oracle that reproduces the real failure:
 
@@ -80,7 +80,7 @@ For a deep symptom or suspected test pollution, read [root-cause-tracing.md](roo
 
 ### Boundary Instrumentation
 
-Instrument only boundaries relevant to competing explanations. Capture the minimum safe values needed to show where correct state becomes incorrect. Never log secrets, credentials, personal data, or sensitive health data. Prefer existing logging and runner facilities; do not create a one-use helper, wrapper, script, manager, or monitoring owner for a single investigation.
+Instrument only boundaries relevant to competing explanations. Capture the minimum safe values needed to show where correct state becomes incorrect. Never log secrets, credentials, personal data, or sensitive health data. Prefer existing logging and runner facilities. A function or module may isolate a concrete current responsibility even with one caller; do not invent reusable diagnostic infrastructure for hypothetical later use. New probes, scripts, or test facilities still require the task's exact authorization.
 
 Mark temporary probes as task-owned and remove them after the hypothesis is resolved unless the governing task explicitly adopts them as durable telemetry. The probe's output is evidence, not a production fix.
 
@@ -107,7 +107,7 @@ Run the smallest safe probe and read the result. If rejected, remove or revert o
 
 After a root cause is supported, establish the correct failing regression or other real oracle. For an automated behavior, use strict RED → GREEN → REFACTOR. For a document, artifact, external service, or physical behavior, use the contract's actual oracle and disclose the evidence layer.
 
-Implement one minimum causally complete fix at the earliest controllable source. Do not add unrelated refactors, blanket validation, or any retry, fallback, silent default, broad catch, or future monitoring that the accepted contract does not require. Run the focused oracle and the directly affected regression set.
+Implement the smallest complete fix at the earliest controllable source, including necessary direct consumers. Put checks where data is accepted or a rule is enforced; do not repeat a still-valid guarantee downstream. Reuse accepted error handling, preserve the cause, and perform required cleanup without disguising failure as success, an empty result, or a default. Do not add unrelated refactors, hypothetical reuse, failure screens, retries, or recovery. Run only approved validation; explain each actual failure and do not repeat unchanged runs, alter inputs, weaken assertions, or extend waits to obtain a pass.
 
 Candidate-introduced regressions must be repaired within scope. Prove, preserve, and report pre-existing or unrelated failures; do not fix them or claim the unrun larger suite passed.
 

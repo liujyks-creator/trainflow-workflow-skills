@@ -99,9 +99,9 @@ A syntax error, broken fixture, unavailable environment, or unrelated baseline f
 
 ### GREEN — Implement the Minimum Causal Behavior
 
-Write only the smallest causally complete implementation that makes the current RED pass. Do not add future options, extra validation, silent defaults, retries, fallbacks, unrelated cleanup, or speculative abstractions unless the current accepted behavior and RED require them.
+Implement the smallest complete change for the approved behavior, including necessary direct callers, data handling, and UI wiring. Do not leave half a feature to reduce file count. Do not add future options, unrelated cleanup, or speculative abstractions. Validation stays within the approved set; explain an actual failure before proceeding, and do not obtain GREEN through repeated unchanged runs, changed inputs, weaker assertions, or longer waits.
 
-Trust accepted internal invariants. Add validation only at a real input, persistence, network, external API, or device boundary when the accepted contract requires it. Preserve the original failure signal; do not hide it with a broad catch or default.
+Rely on explicit user decisions, types, database constraints, and current framework guarantees; do not present guesses as facts or invent blockers from unknowns. Validate at the place responsible for accepting data or enforcing a rule, including required business-state checks. Do not repeat a check downstream while its guarantee remains valid. Reuse accepted error handling, preserve the original cause, and perform required cleanup; catching an error is not itself swallowing it. Never turn failure into success, an empty result, or a default, and do not invent failure screens from an error channel.
 
 Run the focused test again. If it still fails, change the implementation or correct a proven oracle defect—never weaken the accepted assertion merely to obtain GREEN.
 
@@ -113,7 +113,7 @@ Then run the directly affected regression set: consumers, state transitions, per
 
 ## Existing Work and Code-First Recovery
 
-Code that existed before the current attempt—accepted base content, user dirty work, another candidate, or protected state—must remain intact. Process only the approved behavior or complete finding batch. Do not create a one-use helper, wrapper, script, or manager when an existing framework feature or a scoped inline change is sufficient.
+Code that existed before the current attempt—accepted base content, user dirty work, another candidate, or protected state—must remain intact. Process only the approved behavior or complete finding batch. A function or module may express a current responsibility even with one caller. Prefer existing capabilities; add structure only for a concrete present need, not hypothetical reuse. This applies to both existing-code changes and new projects and does not expand approved paths or test facilities.
 
 If the current agent wrote implementation before RED, removal is allowed only when every removed line is precisely attributable to the current agent's current undelivered attempt, has not been delivered or adopted by accepted work, is not protected, and has no accepted consumer or dependency. Preserve all other content and remove the attributable change with a scoped edit, never a destructive Git reset or checkout. Then establish RED. Local commit or push status alone does not define delivery or adoption.
 

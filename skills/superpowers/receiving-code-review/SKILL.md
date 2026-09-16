@@ -39,10 +39,10 @@ Define the smallest sufficient evidence set before execution. Size it by demonst
 
 ## Repair Constraints
 
-- Do not assume, conceal uncertainty, or implement feedback merely because a Reviewer asserted it. Expose decision-relevant uncertainty, load-bearing choices and trade-offs, their ripple effects, and the decision owner before editing depends on them.
-- Change only what is necessary to solve the verified findings; clean up only problems introduced by the current Repair.
-- Do not add speculative behavior, impossible-state guards, fallbacks, empty/default values, broad catches, silent recovery, or error swallowing.
-- Trust accepted internal contracts and framework guarantees; validate only at real external or persistence boundaries.
-- Preserve the original error signal and fail fast on invariant violations; never convert failure into rescue-nil behavior, a broad catch, a silent default, an empty success, or masked recovery.
-- Do not create one-use helpers, tool classes, managers, registries, adapters, wrappers, or abstractions when a direct scoped change is sufficient.
-- Define success criteria before editing and verify them with fresh, risk-matched evidence.
+- Do not present guesses as facts, conceal uncertainty, or implement feedback merely because a Reviewer asserted it. Rely on explicit user decisions and applicable type, database, contract, and framework guarantees. An unsupported scenario alone is not a Repair requirement or blocker; discuss actual unresolved choices before dependent work.
+- Make the smallest complete correction for verified findings, including necessary direct callers, data handling, and UI wiring within the approved scope; clean up only problems introduced by the current Repair.
+- Do not add speculative behavior or failure flows based only on an error channel or an unsupported scenario; do not turn an unknown into a claim of impossibility.
+- Place checks where data is accepted or a rule is enforced, including required business-state checks. Do not repeat a check downstream while the established guarantee remains valid.
+- Reuse accepted error handling, preserve the original cause, and perform required cleanup. Never disguise failure as success, an empty result, or a default. Catch breadth alone does not determine correctness; explicit failure does not require crashing the whole application.
+- A function or module may serve a concrete current responsibility even with one caller. Do not add interfaces, wrappers, factories, managers, or configuration only for hypothetical reuse; any scope change still requires approval.
+- Define success criteria before editing and use only approved validation. Explain actual failures; do not repeat unchanged runs, change inputs, weaken assertions, or extend waits merely to obtain a pass.

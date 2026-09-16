@@ -85,15 +85,15 @@ BMAD 不实施代码、不运行 TDD/debug、不做代码 Review、不合并 Git
 
 ## 不变量
 
-1. 不假设，不隐藏困惑；Story 阶段每个新问题或疑问均按人工讨论门禁处理；其他规划阶段只问会改变产品、UX、Architecture、scope、owner、evidence 或完成判据的承重 unknown。
+1. 不把猜测当事实，不隐藏困惑。用户已经决定的行为，以及类型、数据库约束和当前框架明确保证的事情，直接沿用。没有依据的判断必须说明未知，不能据此新增需求或阻塞任务。发现影响当前工作的真实疑问，先做最小定位，再与用户讨论。 Story阶段仍遵守人工讨论门禁；其他规划阶段只问影响产品、UX、Architecture、scope、owner、evidence或完成判据的承重unknown。
 2. 每轮最多三个承重问题；每题给事实、互斥选项、trade-off、推荐、直接 ripple 和最终 decision owner。推荐不是决定。
 3. `Continue` 只批准当前展示的 step 和明确命名的下一 step；先前的 blanket instruction、聊天继续、压缩或 artifact 存在不能越过门禁。
 4. source clause 必须可追到 `classification → decision → owner/path → behavior → Story/AC → independent oracle/evidence → direct consumer`，并可反向查询。
 5. framework/version/API feasibility 在 READY 前由真实 docs/source/PoC 证明。不能表达的合同不留给 Writer 猜，也不偷渡 callback、wrapper 或第二 authority。
 6. 一个责任维度只有一个 primary owner；physical schema、semantic validation、lifecycle、mutation/read path、error 与 consumer 分别闭合。
-7. Story capacity 是结构判据，不以 token、文件、代码行或“看起来简单”证明。
-8. 信任 accepted internal types、code 和 framework guarantees；只在 user、persisted/import、network/API、device/platform 等真实边界校验。禁止为 excluded impossible state 增加 guard、fallback、默认值或测试。
-9. 不吞错；真实 boundary/invariant 失败应保留原始信号并 fail fast。不要为一次性操作创造 helper、manager、registry、adapter 或 wrapper。
+7. Story capacity 是结构判据，不以 token、文件、代码行或“看起来简单”证明。完成当前要求所必需的直接调用方、数据处理和页面接线，应一起处理，不能为了少改文件留下半套功能。验证只能在批准范围内进行；失败后先说明具体原因，不重复试跑，不靠改输入、放宽断言或延长等待取得通过。
+8. 检查放在负责接收数据或执行规则的位置。同一条件已经检查通过，而且中途没有改变，就不在每层重复检查。持久化数据、外部输入和实际业务状态需要哪些检查，依据当前合同确定，不能凭空添加。 直接依赖已明确的类型、数据库约束、合同和当前框架保证；未知不等于不可能，错误通道本身不构成新需求。
+9. 不得把失败伪装成成功、空结果或默认值。已有错误处理约定直接复用，保留原始原因。确有资源需要释放时完成清理；是否提示用户、允许离场或重试，沿用已批准行为，不凭错误通道的存在新增一套页面流程。 可以为当前明确职责提取函数或模块，即使只调用一次。不得仅为将来可能复用，新增接口、包装层、工厂、管理器或配置机制。新增结构必须说清它解决了当前哪一个问题。 这些判断适用于存量修改与从零构建，不单凭调用次数或catch范围判缺陷。
 10. Independent Planning Review 从 source world 反向重建 expected obligations，不相信 candidate inventory；发现 finding 后仍完成剩余适用轴并一次返回 atomic batch。
 11. 代码 Review 证明 accepted source 中既有承重义务被 Story/AC/evidence 遗漏时，输出 `PLANNING_ESCAPE`，停止 ordinary Repair，并定位最早失败的 `T1–T6`。
 12. 到 exact READY Story 并展示完整 manual handoff 后 BMAD 停止。

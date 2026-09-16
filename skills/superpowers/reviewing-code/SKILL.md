@@ -79,15 +79,15 @@ Before running commands, define a claim-to-evidence budget. Size it by demonstra
 
 ## Required Checks
 
-- Do not assume or conceal uncertainty. Mark decision-relevant facts as `PROVEN`, reproducible `INFERENCE`, `UNKNOWN`, or `CONFLICT`, and expose load-bearing trade-offs.
-- Require the smallest causally complete change. Reject speculative features, incidental refactors, and changes outside the approved problem.
+- Do not present guesses as facts or conceal uncertainty. Rely on explicit user decisions and applicable type, database, contract, and framework guarantees. Mark decision-relevant facts as `PROVEN`, reproducible `INFERENCE`, `UNKNOWN`, or `CONFLICT`; an unsupported scenario alone is not a finding or blocker. Discuss actual unresolved choices under the Story gate.
+- Require the smallest complete change for the approved problem, including necessary direct callers, data handling, and UI wiring. Fewer files is not a reason to leave half a feature. Reject speculative features, incidental refactors, and unapproved scope.
 - Confirm only necessary places changed and only task-created problems were cleaned up.
-- Require explicit success criteria and fresh evidence before a passing claim.
-- Trust accepted internal code, types, and framework guarantees. Validate user input, persistence/import, external APIs, network, device, platform, and other real system boundaries.
-- Reject guards, fallbacks, empty/default values, or extra validation for states the accepted contract says cannot occur.
-- Preserve original failure signals. Reject broad catches, silent defaults, error swallowing, and recovery that hides an invariant violation.
-- Reject one-use helpers, tool classes, managers, registries, adapters, wrappers, or abstractions when a direct scoped change or existing framework feature is sufficient.
-- Prefer fast, explicit failure over masking a defect.
+- Require explicit success criteria and valid evidence before a passing claim. Stay within approved validation; explain actual failures, do not repeat unchanged runs or change inputs, weaken assertions, or extend waits to obtain a pass.
+- Check that validation is placed where data is accepted or a rule is enforced, including required business-state checks. Do not require duplicate downstream checks while an established guarantee remains valid.
+- Do not demand guards, fallbacks, or extra validation for unsupported hypothetical scenarios or states excluded by explicit applicable guarantees; do not guess that an unknown state is impossible.
+- Check that accepted error handling preserves the original cause and required cleanup. Reject failure disguised as success, an empty result, or a default; do not classify a catch as swallowing merely by its breadth, or demand a new failure flow merely because an error channel exists.
+- Evaluate structure by its concrete current responsibility, not call count. A function or module with one caller can be appropriate in either existing code or a new project; reject abstractions justified only by hypothetical reuse.
+- Require an explicit, truthful failure outcome under the accepted contract; this does not require crashing the whole application or adding unapproved recovery behavior.
 - Verify tests exercise real behavior and the decisive boundary, including negative cases capable of failing the faulty implementation.
 
 ## Independence And Permissions
