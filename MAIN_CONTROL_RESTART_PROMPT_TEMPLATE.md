@@ -98,6 +98,13 @@ Story 阶段人工讨论门禁：
 - 只重读身份变化或关键事实无法证明的来源；不重复全部技能/文档、已完成命令、提示词或角色。
 - 压缩不改变 MANUAL_RELAY，也不授权自动派发。
 
+Story实施、审查与修复边界（2026-10-08用户决定）：
+1. **首次Writer完整实现批准的Story**，把范围内的行为和接线做完整。
+2. **首次Reviewer独立完整审查；后续Reviewer只检查当前批准的修复及其明确影响。** 原来通过的审查结论和测试结果按原范围保留，不自动失效、不重复审查或重跑。
+3. **Repair Writer严格按批准内容修改。** 指定的问题、路径和验证范围就是边界；需要改别处或增加验证，先说明并取得批准，不能借“完整原因链”自行越界。
+
+首次完整检查应覆盖批准范围内的实际行为和必要直接接线；后续Review只完成当前批准修复及明确影响的审查，继承原范围内已通过的结论和测试。完整提示词、完整报告和fresh Reviewer均不表示重审整个Story或重跑旧测试。
+
 收到 Writer/Repair 报告后：
 - 核验 accepted base、branch/candidate、准确 three-dot scope、完整 finding batch、验证、artifact/evidence、index、同步和受保护状态。
 - Writer 永不 merge。
@@ -108,11 +115,11 @@ Story 阶段人工讨论门禁：
 
 收到 Reviewer/re-Reviewer 报告后：
 - 进度和部分 findings 均不是终态；只接受一份完整 REVIEW_COMPLETE。
-- “完整 Review”只覆盖当前授权节点的 exact delta、合同、acceptance、直接受影响行为、所需 evidence、Git 与 protected state；不扩大为全仓库、全部历史、上游技能/插件或无关模块审计。
+- 首次完整Review覆盖批准Story的exact delta、合同、全部acceptance、范围内行为及必要直接接线、批准的evidence和必要Git／保护状态门禁。后续Review只覆盖当前批准修复及明确影响；原范围内已通过的审查结论和测试结果继续保留，不重审整个Story，不扩大成历史或无关审计。
 - Story Review 发现新问题或疑问时，完成最小事实定位即在当前对话直接与用户讨论；不得以必须完成全部轴或一次性汇总 findings 为由推迟交回。用户决定后从未完成处继续，保留未受影响的已审结论；完整 REVIEW_COMPLETE 仍须在全部获准审查完成后交付，不把中途讨论当作 PASS。
 - PASS 时，核验同一 Reviewer 已按 accepted 策略机械 `--no-ff` merge、push，并证明 merge parents/tree、candidate ancestry、refs 同步、clean index 与受保护状态。
 - 非 PASS 时 candidate 保持只读；向用户呈现完整 findings/report，再由主管理选择一次完整 Repair 或 Correct Course。
-- Repair 后生成新的完整 re-Review 提示词，由另一名 fresh Reviewer 重做当前节点完整 Review。
+- Repair后生成一份格式完整、范围明确的re-Review提示词，绑定当前批准修复及其明确影响、准确修复起点／candidate和继承的通过结论／测试来源；由另一名fresh Reviewer进行增量审查，不重新完整审查Story。
 
 环境、证据与资产：
 - Windows 上已有 `pwsh` 时优先用于 UTF-8、hash 与验证；不得为普通任务重新安装或升级 PowerShell。

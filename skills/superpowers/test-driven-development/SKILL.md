@@ -5,6 +5,14 @@ description: Use for approved behavior changes and bug fixes that can be exercis
 
 # Test-Driven Development
 
+## Story实施、审查与修复边界
+
+1. **首次Writer完整实现批准的Story**，把范围内的行为和接线做完整。
+2. **首次Reviewer独立完整审查；后续Reviewer只检查当前批准的修复及其明确影响。** 原来通过的审查结论和测试结果按原范围保留，不自动失效、不重复审查或重跑。
+3. **Repair Writer严格按批准内容修改。** 指定的问题、路径和验证范围就是边界；需要改别处或增加验证，先说明并取得批准，不能借“完整原因链”自行越界。
+
+首次完整检查应覆盖批准范围内的实际行为和必要直接接线；后续Review只完成当前批准修复及明确影响的审查，继承原范围内已通过的结论和测试。完整提示词、完整报告和fresh Reviewer均不表示重审整个Story或重跑旧测试。
+
 ## Purpose and Authority
 
 Use strict RED → GREEN → REFACTOR to prove an approved behavior change. This skill supplies a method; it does not grant scope, permissions, architecture changes, or a new evidence standard.

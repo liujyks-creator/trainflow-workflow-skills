@@ -5,6 +5,16 @@ description: Use before claiming a candidate is complete, fixed, passing, ready,
 
 # Verification Before Completion
 
+## Story实施、审查与修复边界
+
+1. **首次Writer完整实现批准的Story**，把范围内的行为和接线做完整。
+2. **首次Reviewer独立完整审查；后续Reviewer只检查当前批准的修复及其明确影响。** 原来通过的审查结论和测试结果按原范围保留，不自动失效、不重复审查或重跑。
+3. **Repair Writer严格按批准内容修改。** 指定的问题、路径和验证范围就是边界；需要改别处或增加验证，先说明并取得批准，不能借“完整原因链”自行越界。
+
+首次完整检查应覆盖批准范围内的实际行为和必要直接接线；后续Review只完成当前批准修复及明确影响的审查，继承原范围内已通过的结论和测试。完整提示词、完整报告和fresh Reviewer均不表示重审整个Story或重跑旧测试。
+
+本技能的fresh证据要求仅用于本次新增或有明确影响的claim，不使原范围内仍有效的已通过结果自动失效。
+
 ## Purpose and Authority
 
 Evidence must precede every completion, correctness, readiness, commit, or push claim. This skill defines a verification method; it does not grant scope, permission, integration authority, review authority, or permission to replace a human or device gate.
@@ -45,11 +55,11 @@ Before a positive claim:
 1. **Claim:** State exactly what is complete, fixed, passing, or ready, and identify the candidate being evaluated.
 2. **Risks:** List every risk directly covered by that claim: changed behavior, direct consumers, state or persistence boundaries, artifact identity, scope, and any external, device, or human gate.
 3. **Oracles:** Select a real oracle for each applicable risk.
-4. **Fresh run:** Run the smallest complete set of selected commands and evidence steps against the current candidate.
+4. **Fresh run:** Run only approved commands and evidence steps for current new or demonstrably affected claims. Preserve passed unaffected results in their original scope without repeating them.
 5. **Full result:** Let each selected command finish; read its complete relevant output, exit code, failure and warning counts, and produced artifact identity.
 6. **Honest state:** Make only the claim the evidence supports. Otherwise report the actual result, missing gate, and recovery condition.
 
-Old output, another candidate's artifact, source inspection alone, or confidence is not fresh evidence.
+Old output or another candidate's artifact cannot freshly prove newly changed behavior; source inspection alone or confidence cannot replace a required runtime oracle. Previously passed tests and review conclusions remain valid in their original unaffected scope even when the candidate changes. Retain their original identity and scope; do not claim that inherited results are runtime proof of the new change.
 
 ## Complete Command vs. Complete Risk Set
 
@@ -105,6 +115,6 @@ Do not claim an unperformed Reviewer, merge, physical-device, human, Android, or
 
 Stop and report the actual state when an oracle cannot run, its output is incomplete, the candidate identity is uncertain, a required evidence layer is unavailable, or verification would expand scope or authority.
 
-Failure signals include: “should” or “probably” replacing a run, a partial command represented as complete, a large unrelated suite substituted for the direct oracle, a successful build represented as behavior proof, an emulator represented as a physical device, old evidence reused for a new candidate, or a Writer represented as an independent Reviewer.
+Failure signals include: “should” or “probably” replacing a required run, a partial command represented as complete, a large unrelated suite substituted for the direct oracle, a successful build represented as behavior proof, an emulator represented as a physical device, old evidence falsely presented as proof of newly changed behavior, or a Writer represented as an independent Reviewer. Preserving passed results in their original unaffected scope is not a failure signal.
 
 Once every accepted claim has one fresh risk-matched proof and all required gates are satisfied, stop. Do not repeat a passing command when the candidate and relevant environment are unchanged, add a broader suite for appearance, hash unrelated files, or manufacture extra evidence. A new failure returns to the authorized implementation or diagnostic role; an unapproved write, evidence layer, or decision returns `SCOPE_EXPANSION_REQUIRED` or the role contract's blocked terminal.

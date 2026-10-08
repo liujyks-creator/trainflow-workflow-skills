@@ -62,7 +62,14 @@
 - 不因压缩重复完整读取、已完成验证、构建或设备步骤。
 
 当前节点边界：
-- “完整 Review”是完整检查当前授权节点：准确 three-dot delta、accepted contract、全部 acceptance、直接受影响行为、要求的 evidence、Git 门禁及 protected state。
+- 首次完整Review检查批准Story的准确delta、合同、全部acceptance、范围内行为及必要直接接线、批准的evidence和必要Git／保护状态门禁。后续Review只检查当前批准修复的准确delta及明确影响；继承原范围内已通过的结论和测试，不重审整个Story。
+
+Story实施、审查与修复边界（2026-10-08用户决定）：
+1. **首次Writer完整实现批准的Story**，把范围内的行为和接线做完整。
+2. **首次Reviewer独立完整审查；后续Reviewer只检查当前批准的修复及其明确影响。** 原来通过的审查结论和测试结果按原范围保留，不自动失效、不重复审查或重跑。
+3. **Repair Writer严格按批准内容修改。** 指定的问题、路径和验证范围就是边界；需要改别处或增加验证，先说明并取得批准，不能借“完整原因链”自行越界。
+
+首次完整检查应覆盖批准范围内的实际行为和必要直接接线；后续Review只完成当前批准修复及明确影响的审查，继承原范围内已通过的结论和测试。完整提示词、完整报告和fresh Reviewer均不表示重审整个Story或重跑旧测试。
 - 它不授权重新审计整个仓库、全部历史 Story、未变更的上游技能/插件、无关模块或当前节点之外的规划。
 - Expected set不是忽略必要直接影响的理由，也不是事后接受任意额外路径的许可。Reviewer可只读追踪直接影响；只有 accepted Causal-expansion rule/amendment 覆盖的额外路径才是授权范围，否则报告 scope finding或缺失决定。
 - 发现一个 finding 只会阻止 PASS/集成，不会结束剩余 Review。继续检查所有剩余适用轴并累积 findings。
@@ -122,7 +129,7 @@ Findings：
 - 最小修复不等于最少文件；必须包含直接必要的代码、测试、文档、配置和 evidence。
 - 若 Repair 需要新产品/架构/ownership 决策、超出当前授权范围或缺少人工证据，只报告门禁，不自行设计或实施。
 - 对额外路径区分 accepted causal expansion、unapproved scope violation 与 unrelated/pre-existing issue；不得把“修复需要该文件”当作 Reviewer替主管理补授权的理由。
-- re-Review 由另一名 fresh Reviewer 对 Repair 后完整 candidate 重做本节点完整 Review，不只复查旧 findings，也不扩大到节点外。
+- re-Review由另一名fresh Reviewer只检查当前批准的修复及其明确影响。原来通过的审查结论和测试结果按原范围保留，不自动失效、不重复审查或重跑；完整候选身份不代表完整Story重新审查。
 
 Verdict 与集成：
 - 分别返回 SPEC、QUALITY、EVIDENCE verdict。

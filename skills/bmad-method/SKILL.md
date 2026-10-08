@@ -5,6 +5,16 @@ description: 用于正式编码前创建、更新、审查或修正规划：从 
 
 # BMAD Method
 
+## Story实施、代码审查与修复交接边界
+
+1. **首次Writer完整实现批准的Story**，把范围内的行为和接线做完整。
+2. **首次Reviewer独立完整审查；后续Reviewer只检查当前批准的修复及其明确影响。** 原来通过的审查结论和测试结果按原范围保留，不自动失效、不重复审查或重跑。
+3. **Repair Writer严格按批准内容修改。** 指定的问题、路径和验证范围就是边界；需要改别处或增加验证，先说明并取得批准，不能借“完整原因链”自行越界。
+
+首次完整检查应覆盖批准范围内的实际行为和必要直接接线；后续Review只完成当前批准修复及明确影响的审查，继承原范围内已通过的结论和测试。完整提示词、完整报告和fresh Reviewer均不表示重审整个Story或重跑旧测试。
+
+本节用于软件Story的Writer、代码Reviewer及Repair交接，不扩大BMAD权限，也不改变规划Review的授权范围。
+
 ## 根目标
 
 把不完整、冲突或分散的用户目标、accepted facts 与约束，无损转换为正确范围、正确 Architecture、稳定 owner/lifecycle、正确依赖、闭合证据且可由单 Writer 实施、单 Reviewer 独立判定的 exact READY Story。结构失效时完成 Correct Course；完成 manual handoff 后停止。
