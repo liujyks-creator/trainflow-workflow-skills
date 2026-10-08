@@ -17,6 +17,13 @@ description: Use when acting as a fresh independent reviewer of a candidate chan
 
 Review the exact candidate against its accepted contract and real evidence. The role template supplies identity, scope, permissions, and output fields; this skill owns the review method.
 
+## 先按真实流程和保存语义判断
+
+- 先从已接受的用户流程确认入口、操作顺序、保存／确认动作及实际反馈，再判断源码是否违反该流程。函数或接口能够串接，不足以证明自行拼出的用户场景属于任务。
+- 区分正在编辑、待保存内容、保存确认、已持久化结果及当前正式归属；沿用用户已确定的提交语义。未保存选择不能当作已保存的归属变更，草稿变化不能混称正式数据变化。共享更新依据已接受的共同owner和保存规则判断。
+- 误操作、中断、交错编辑或未保存切换场景，必须有已接受流程／入口规则及具体可达依据；缺少依据时说明未知，不能据此列阻塞finding、要求新增修复或测试。不把“不常见”说成“不可能”，也不把技术可调用说成业务必须支持。
+- 用户明确裁定操作流程或场景边界后，按该边界更新判定，保留有效审查和测试。被排除场景不继续作为当前阻塞；保留源码事实，不冒称路径不存在、代码已修复或所有场景已证明。不得自行新增锁、自动保存、丢弃草稿或页面限制来强制流程。
+
 ## 用户流程与最小必要检查
 
 以下规则约束本文件中的完整读取、身份核验、独立核对和交付检查，不新增审批层、报告文件、测试或检查轮次。
@@ -77,7 +84,7 @@ BOUND -> CONTRACT_RECONSTRUCTED -> DELTA_REVIEWED -> EVIDENCE_REVIEWED
 1. Bind the exact accepted base, candidate, contract, allowed scope, and protected state. Treat branch names and delivery reports as locators, not proof.
 2. Reconstruct expected obligations from accepted sources before accepting the Writer's inventory or conclusions.
 3. Inspect the exact delta and its direct consumers. Follow affected ownership, lifecycle, state, persistence, error, security, and evidence paths only as far as the current node requires.
-4. Compare every load-bearing obligation to implementation and an independent observable oracle. Include relevant excluded-state and adversarial cases; passing positive examples alone is insufficient.
+4. Compare every load-bearing obligation to implementation and an independent observable oracle. Include only contract-relevant negative or excluded-state cases within the accepted workflow and approved evidence profile; do not invent operation ordering or expand verification. Passing examples prove only their actual scope.
 5. Run only fresh checks that can prove the current claims at the real boundary required by the contract. Do not replace production or persistence evidence with source inspection, mocks, no-ops, simulations, or injected seams unless that is the accepted boundary.
 6. Complete all applicable review axes after finding an issue. Return one atomic findings batch and a clear verdict.
 
@@ -96,7 +103,7 @@ Before running commands, define a claim-to-evidence budget. Size it by demonstra
 - Check that accepted error handling preserves the original cause and required cleanup. Reject failure disguised as success, an empty result, or a default; do not classify a catch as swallowing merely by its breadth, or demand a new failure flow merely because an error channel exists.
 - Evaluate structure by its concrete current responsibility, not call count. A function or module with one caller can be appropriate in either existing code or a new project; reject abstractions justified only by hypothetical reuse.
 - Require an explicit, truthful failure outcome under the accepted contract; this does not require crashing the whole application or adding unapproved recovery behavior.
-- Verify tests exercise real behavior and the decisive boundary, including negative cases capable of failing the faulty implementation.
+- Verify approved tests exercise real behavior and the decisive boundary, including the approved negative cases; this does not authorize adding scenarios or rerunning passed checks.
 
 ## Independence And Permissions
 
