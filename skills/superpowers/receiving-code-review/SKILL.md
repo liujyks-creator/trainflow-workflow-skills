@@ -5,6 +5,18 @@ description: Use when a Writer or Repair Writer receives a code-review finding b
 
 # Receiving Code Review
 
+## 批准范围内自行修错与人工决定
+- 批准范围内的代码、脚本、参数、导入、接线和验证载体实现错误，由当前agent自行定位和修正，不请求重新批准，不转交用户修改。使实现恢复到合同规定的行为，不属于新增业务决定。
+- 真实冲突：两条有效要求无法同时满足，例如一条要求“有引用的项目必须保留”，另一条要求“删除时连同引用一起删除”。先定点核对来源和优先级；确实无法依据已有决定解决，才交用户裁定。
+- 业务未决选择：合同缺少一个会影响用户实际结果的规则，必须在不同业务行为之间选择，例如尚未规定“停用项目是否允许新增关联”。已有决定直接沿用；符合相同合同的技术写法由agent自行选择，语法、导入、参数和接线错误不属于业务未决选择。例子只解释标准，不新增当前任务的规则或测试。
+- 越界、超出合同或缺少必要操作授权：下一动作实际超出已批准路径、业务规则、验证内容、运行次数、环境或角色权限，才说明准确增量并请用户决定。不能仅因发生错误、技术方法尚未查清或修复改变了错误结果，就声称缺少授权。
+- 停止失败的执行、保留现场和暂不声称通过，不等于冻结批准范围内的定位与修正。仅暂停依赖未决决定或缺少授权的动作；其他已授权工作继续。恢复、再次执行等动作按原批准内容和次数判断，不自动增加次数、不重跑未受影响通过项。
+- 将载体修正为正确执行原定输入、步骤、断言和编排行为，不算扩大验证；新增或改变这些已批准要求才属于范围变更。不得借修错放宽断言、改输入、增加场景或反复改变编排来绕过失败。本规则不授予Planner实施、Reviewer修改候选或其他角色之外的权限。
+- 同一个问题累计经过三次不同的、确实需要询问用户并由用户决定的授权后，仍未解决或再次出现时，停止继续提出或实施第四项处理，先与用户复盘并讨论纠错方向。这三次可以是三次不同的越界请求、合同外追加内容或三种不同的处理方案，不限定为三轮代码修复。按实际记录说明每项授权要解决什么、决定及边界是什么、实际做了什么、为什么仍错、现有证据和未解决事项；不得未经核对就宣称全部实现无效，不自行升级架构或扩大验证。讨论确定纠错方向及必要授权后继续，未受影响的有效成果和其他已授权工作保留。
+- 上述“三次”按针对同一问题的三项不同且必要的用户授权决定计算。同一授权的重复确认不重复计数；批准范围内的代码、脚本、参数、导入、接线或验证载体错误，本来就应由agent自行定位和修正，既不请求授权，也不计入这三次。不得把本应自行解决的错误包装成越界或业务选择来索取授权。用户授权要求完成准确批准的工作，不代表验收错误结果；不得反复索取新的授权代替复盘。
+来源：2026-10-11本PubMan主管理对话用户明确决定及后续澄清。本定义及同一问题三项不同必要授权后的复盘门禁优先于旧的无条件暂停、遇到疑问即审批或按失败次数自动升级措辞。
+
+
 ## Story实施、审查与修复边界
 
 1. **首次Writer完整实现批准的Story**，把范围内的行为和接线做完整。
@@ -36,7 +48,7 @@ If the accepted oracle remains red, return to the supported root cause and the a
 ## Workflow
 
 1. Read the complete batch before editing. Restate each requirement in technical terms and bind it to the accepted contract, exact candidate, affected path, and observable failure.
-2. Verify every finding against the current codebase. If an item is unclear, conflicts with accepted authority, or requires a new product, architecture, ownership, data, or evidence decision, stop before editing and report the exact blocker.
+2. Verify every finding against the current codebase. Resolve ordinary uncertainty by scoped investigation; correct implementation defects under the accepted contract and allowed paths without renewed approval. Pause affected work and request a decision only for confirmed incompatible valid requirements, an undecided business rule, or an action that exceeds the contract or lacks authorization. An unclear technical method alone is not a blocker; preserve contrary evidence for an invalid finding instead of modifying correct code.
 3. Identify the shared root cause and adjacent direct consumers needed for a causally complete correction. Do not turn the scan into a general audit.
 4. Use `../test-driven-development/SKILL.md` for approved behavior changes. Use `../systematic-debugging/SKILL.md` only for an observed unexpected or unexplained failure. Use `../verification-before-completion/SKILL.md` before any completion, commit, or push claim.
 5. Close the accepted batch in one Repair candidate and report finding-to-change-to-evidence mapping. Do not self-Review, merge, or dispatch the next role.
